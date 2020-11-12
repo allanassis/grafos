@@ -150,7 +150,7 @@ while option != "4":
         graph_name = input("Digite o nome do grafo:  ")
         print("\n")
         print(f"Matriz {graph_name} é:\n")
-        print_matriz(graphs[graph_name]["matriz_ad"])
+        print_matriz(graphs[graph_name].adjacency_matrix)
 
     elif option == "2":
         graph_name = input("Digite o nome do grafo:  ")
@@ -188,3 +188,6 @@ while option != "4":
         print("\n")
 
 
+0;1;0
+0;1
+0
