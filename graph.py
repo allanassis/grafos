@@ -58,10 +58,21 @@ class Graph:
   
 
 
-def print_matriz(matriz):
+def print_matriz(matrix):
     print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
-      for row in matriz]))
+      for row in matrix]))
 
+def save_matrix(matrix, filename):
+    f = open(filename, "w")
+    line = ""
+    lines = ""
+    for i in range(len(matrix)):
+        for k in range(len(matrix[0])):
+            line = line + str(matrix[i][k]) + " "
+        lines = lines + (line + "\n")
+        line = ""
+    f.write(lines)
+    f.close()
 
 print("\n\n")
 
@@ -197,6 +208,7 @@ while option != "0":
     elif option == "4":
         graph_name = input("Digite o nome do grafo: ")
         m = None
+        filename = None
         graph_type = input('''
             Escolhe qual grafo deseja gerar a matriz de adjacencia
                 a - Completo K(n) x
@@ -208,8 +220,9 @@ while option != "0":
                 g - Cubo Q(n) 
             ''')
         if graph_type == "a":
-            n = int(input("Digite o tamanho do n da matriz completa"))
+            n = int(input("Digite o tamanho do n da matriz completa: "))
             m = [[0]*n  for i in range(n)]
+            filename = "cubo" + str(n)
             for i in range(n):
                 for k in range(n):
                     if i != k:
@@ -219,6 +232,7 @@ while option != "0":
             n1 = int(input("Digite o tamanho do n1: "))
             n2 = int(input("Digite o tamanho do n2: "))
             m = [[0]*(n1+n2)  for i in range(n1+n2)]
+            filename = "bipartido" + str(n1) + "_" + str(n2)
             for i in range(n2):
                 for k in range(n2, n2+n1):
                     m[i][k] = 1
@@ -228,6 +242,7 @@ while option != "0":
 
         elif graph_type == "d":
             n = int(input("Digite o tamanho do n: "))
+            filename = "ciclo" + str(n)
             m = [[0]*n  for i in range(n)]
 
             m[0][n-1] = 1
@@ -240,6 +255,7 @@ while option != "0":
 
         elif graph_type == "c":
             n = int(input("Digite o tamanho do n: "))
+            filename = "estrela" + str(n)
             m = [[0]*n  for i in range(n)]
 
             for i in range(n):
@@ -250,7 +266,7 @@ while option != "0":
         elif graph_type == "e":
             n = int(input("Digite o tamanho do n: "))
             m = [[0]*(n+1)  for i in range(n+1)]
-
+            filename = "roda" + str(n)
             m[0][n-1] = 1
             m[n-1][0] = 1
 
@@ -263,6 +279,7 @@ while option != "0":
 
         elif graph_type == "f":
             n = int(input("Digite o tamanho do n: "))
+            filename = "caminho" + str(n)
             m = [[0]*n  for i in range(n)]
             for i in range(n):
                 for k in range(n):
@@ -281,6 +298,7 @@ while option != "0":
         graphs[graph_name] = g
 
         print("A matriz adjavente desse grafo é:\n")
+        save_matrix(m, filename)
         print_matriz(graphs[graph_name].adjacency_matrix)
 
 
