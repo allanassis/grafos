@@ -105,7 +105,7 @@ print(grafos)
 graphs = {}
 option = None
 
-while option != "4":
+while option != "0":
     print('''
    ___             /\/|         
   / _ \  _ __  __ |/\/  ___  ___
@@ -134,12 +134,19 @@ while option != "4":
      |_ \\
     |___/  - Número de componentes conexas
     ''')
+
+    print('''
+     _ _  
+    | | | 
+    |_  _|
+      |_|  - Grafos já conhecidos
+    ''')
     
     print('''
-      _ _  
-     | | | 
-     |_  _|
-       |_| - sair
+      __  
+     /  \ 
+    | () |
+     \__/  - sair
     ''')
 
     print("\n")
@@ -187,7 +194,105 @@ while option != "4":
         print("Número de componentes conexos do grafo escolhido: ", len(graphs[graph_name].connected_components()))
         print("\n")
 
+    elif option == "4":
+        graph_name = input("Digite o nome do grafo: ")
+        m = None
+        graph_type = input('''
+            Escolhe qual grafo deseja gerar a matriz de adjacencia
+                a - Completo K(n) x
+                b - Bipartido completo K(n1,n2) x
+                c - Estrela S(n) x
+                d - Ciclo C(n) n>=3 x
+                e - Roda W(n) n>=3 x
+                f - Caminho P(n) x
+                g - Cubo Q(n) 
+            ''')
+        if graph_type == "a":
+            n = int(input("Digite o tamanho do n da matriz completa"))
+            m = [[0]*n  for i in range(n)]
+            for i in range(n):
+                for k in range(n):
+                    if i != k:
+                        m[i][k] = 1
 
-0;1;0
-0;1
-0
+        elif graph_type == "b":
+            n1 = int(input("Digite o tamanho do n1: "))
+            n2 = int(input("Digite o tamanho do n2: "))
+            m = [[0]*(n1+n2)  for i in range(n1+n2)]
+            for i in range(n2):
+                for k in range(n2, n2+n1):
+                    m[i][k] = 1
+            for i in range(n1, n1+n2):
+                for k in range(n1):
+                    m[i][k] = 1
+
+        elif graph_type == "d":
+            n = int(input("Digite o tamanho do n: "))
+            m = [[0]*n  for i in range(n)]
+
+            m[0][n-1] = 1
+            m[n-1][0] = 1
+
+            for i in range(n):
+                for k in range(n):
+                    if i == (k - 1) or k == (i - 1):
+                        m[i][k] = 1
+
+        elif graph_type == "c":
+            n = int(input("Digite o tamanho do n: "))
+            m = [[0]*n  for i in range(n)]
+
+            for i in range(n):
+                for k in range(n):
+                    if (i == (n - 1) or k == (n - 1)) and i != k:
+                        m[i][k] = 1
+                        
+        elif graph_type == "e":
+            n = int(input("Digite o tamanho do n: "))
+            m = [[0]*(n+1)  for i in range(n+1)]
+
+            m[0][n-1] = 1
+            m[n-1][0] = 1
+
+            for i in range(n+1):
+                for k in range(n+1):
+                    if i == (k - 1) or k == (i - 1):
+                        m[i][k] = 1
+                    if (i == n or k == n) and i != k:
+                        m[i][k] = 1
+
+        elif graph_type == "f":
+            n = int(input("Digite o tamanho do n: "))
+            m = [[0]*n  for i in range(n)]
+            for i in range(n):
+                for k in range(n):
+                    if i == (k - 1) or k == (i - 1):
+                        m[i][k] = 1
+
+        elif graph_type == "g":
+            n = int(input("Digite o tamanho do n: "))
+            m = [[0]*n  for i in range(n)]
+            for i in range(n):
+                for k in range(n):
+                    if i == (k - 1) or k == (i - 1):
+                        m[i][k] = 1
+
+        g = Graph.get_from_adjacency_matrix(m)
+        graphs[graph_name] = g
+
+        print("A matriz adjavente desse grafo é:\n")
+        print_matriz(graphs[graph_name].adjacency_matrix)
+
+
+# k 2,3
+
+#   0 1 2 3 4
+# 0 0 0 1 1 1 
+# 1 0 0 1 1 1 
+# 2 1 1 0 0 0 
+# 3 1 1 0 0 0 
+# 4 1 1 0 0 0 
+
+# 0;1;0
+# 0;1
+# 0
