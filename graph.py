@@ -5,15 +5,32 @@ class Graph:
         self.adj = [[] for i in range(V)] 
         self.adjacency_matrix = []
     
+    def get_coloring(self):
+        black_list = {}
+        coloring = {}
+        for i in range(len(self.adj)):
+            colored = False
+            for c in list(coloring.keys()):
+                if c in black_list:
+                    if not i in black_list[c]:
+                        coloring[c].append(i)
+                        colored = True
+            if not colored:
+                new_color = str(len(list(coloring.keys())) + 1)
+                coloring[new_color] = []
+                coloring[new_color].append(i)
+                black_list[new_color] = self.adj[i]
+        return coloring
+
     @staticmethod
     def get_from_adjacency_matrix(d):
  
         graph = Graph(len(d))
         graph.adjacency_matrix = d
         for k,line in enumerate(graph.adjacency_matrix):
-            for v in line:
+            for i,v in enumerate(line):
                 if int(v) == 1:
-                    graph.add_edge(k,int(v))
+                    graph.add_edge(k,i)
         return graph
 
     @staticmethod
@@ -151,6 +168,13 @@ while option != "0":
     | | | 
     |_  _|
       |_|  - Grafos já conhecidos
+    ''')
+
+    print('''
+     ___ 
+    | __|
+    |__ \\
+    |___/  - Coloração e número gastos de cores
     ''')
     
     print('''
@@ -300,6 +324,14 @@ while option != "0":
         print("A matriz adjavente desse grafo é:\n")
         save_matrix(m, filename)
         print_matriz(graphs[graph_name].adjacency_matrix)
+    
+    elif option == "5":
+        graph_name = input("Digite o nome do grafo: ")
+        g = graphs[graph_name]
+        print("No formato color: [vertices]")
+        coloring = g.get_coloring()
+        for color in coloring:
+            print(f"{color}: {coloring[color]}")
 
 
 # k 2,3
@@ -314,3 +346,5 @@ while option != "0":
 # 0;1;0
 # 0;1
 # 0
+
+# 0 1 0
