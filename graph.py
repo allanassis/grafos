@@ -22,6 +22,13 @@ class Graph:
                 black_list[new_color] = self.adj[i]
         return coloring
 
+    def is_eurelian(self):
+        cc = self.connected_components()
+        for v in self.adj:
+            if len(v) % 2 != 0:
+                return False
+        return True
+
     @staticmethod
     def _do_mycielski(matrix):
         new_matrix = []
@@ -232,6 +239,13 @@ while option != "0":
     / _ \\
     \___/ - Gerar grafo Mycielski
     ''')
+
+    print('''
+     ____ 
+    |__  |
+      / / 
+     /_/  - Verificar se um grafo é Eureliano
+    ''')
     
     print('''
       __  
@@ -397,6 +411,12 @@ while option != "0":
         g = Graph.get_from_adjacency_matrix(m_matrix)
         graphs[graph_name] = g
         print_matriz(m_matrix)
+
+    elif option == "7":
+        graph_name = input("Digite o nome do grafo: ")
+        is_e = graphs[graph_name].is_eurelian()
+        msg = "O grafo é Eureliano" if is_e else "O grafo não é Eureliano"
+        print("Resposta: " + msg)
 
 
 # k 2,3
