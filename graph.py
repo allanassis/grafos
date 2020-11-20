@@ -23,6 +23,55 @@ class Graph:
         return coloring
 
     @staticmethod
+    def _do_mycielski(matrix):
+        new_matrix = []
+        new_lenght = len(matrix) * 2 + 1
+        for i in range(new_lenght):
+            new_matrix.append([0]*new_lenght)
+        
+
+        m = 0
+        n = 0
+        for i in range(new_lenght):
+            for k in range(new_lenght):
+                if n == len(matrix):
+                    n = 0
+                if m == len(matrix):
+                    m = 0
+                new_matrix[i][k] = matrix[m][n]
+                n = n + 1
+            m = m + 1
+
+        for i in range(new_lenght):
+            for k in range(new_lenght):
+                if (new_lenght - 1) == i and  k < new_lenght // 2:
+                    new_matrix[i][k] = 0
+                elif (new_lenght - 1) == i and  k >= new_lenght // 2:
+                    new_matrix[i][k] = 1
+                elif (new_lenght - 1) == k and  i < new_lenght // 2:
+                    new_matrix[i][k] = 0
+                elif (new_lenght - 1) == k and  i >= new_lenght // 2:
+                    new_matrix[i][k] = 1
+                
+        
+        new_matrix[new_lenght - 1][new_lenght - 1] = 0
+        return new_matrix
+
+    @staticmethod
+    def create_mycielski_matrix(clique=2, coloring=2):
+        new_matrix = []
+        if coloring == 2:
+            for i in range(2):
+                new_matrix.append([0]*2)
+            new_matrix[0][0] = 0
+            new_matrix[0][1] = 1
+            new_matrix[1][0] = 1
+            new_matrix[1][1] = 0
+            return new_matrix
+
+        return Graph._do_mycielski(Graph.create_mycielski_matrix(clique, coloring - 1))
+
+    @staticmethod
     def get_from_adjacency_matrix(d):
  
         graph = Graph(len(d))
@@ -175,6 +224,13 @@ while option != "0":
     | __|
     |__ \\
     |___/  - Coloração e número gastos de cores
+    ''')
+
+    print('''
+      __ 
+     / / 
+    / _ \\
+    \___/ - Gerar grafo Mycielski
     ''')
     
     print('''
@@ -332,6 +388,15 @@ while option != "0":
         coloring = g.get_coloring()
         for color in coloring:
             print(f"{color}: {coloring[color]}")
+
+    elif option == "6":
+        graph_name = input("Digite o nome do grafo: ")
+        cliques = int(input("Digite o número de cliques: "))
+        coloring = int(input("Digite o número de chi: "))
+        m_matrix = Graph.create_mycielski_matrix(cliques, coloring)
+        g = Graph.get_from_adjacency_matrix(m_matrix)
+        graphs[graph_name] = g
+        print_matriz(m_matrix)
 
 
 # k 2,3
