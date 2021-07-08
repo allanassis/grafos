@@ -392,7 +392,7 @@ while option != "0":
         graphs[graph_name] = g
 
         print("A matriz adjavente desse grafo é:\n")
-        save_matrix(m, filename)
+        # save_matrix(m, filename)
         print_matriz(graphs[graph_name].adjacency_matrix)
     
     elif option == "5":
